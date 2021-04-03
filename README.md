@@ -1,6 +1,5 @@
 # Wrapper for CARMA-Messenger
 
-
 This repo wraps the CARMA-Messenger software for deployment via Balena.io.
 
 Important paths:
