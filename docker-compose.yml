@@ -1,0 +1,106 @@
+version: "2"
+
+services:
+  display:
+    network_mode: host
+    environment: 
+      - "URL=https://google.com"
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/display.dockerfile
+    privileged: true
+    labels:
+      io.balena.features.dbus: "1"
+
+  messenger-ui:
+    restart: always
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/carma-messenger-ui.dockerfile
+    environment: 
+      - ROS_HOSTNAME=localhost
+    privileged: true
+    network_mode: host
+    labels:
+      io.balena.features.dbus: "1"
+    volumes:
+      - opt-carma-ros:/opt/carma/.ros
+      - opt-carma-logs:/opt/carma/logs
+      - opt-carma-vehicle-config:/opt/carma/vehicle/config:ro
+
+  carma-config:
+    restart: "no"
+    network_mode: host
+    environment: 
+      - ROS_HOSTNAME=localhost
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/carma-messenger-config.dockerfile
+    volumes:
+      - opt-carma-ros:/opt/carma/.ros
+      - opt-carma-logs:/opt/carma/logs
+      - opt-carma-vehicle-config:/opt/carma/vehicle/config
+  
+  roscore:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/carma-base.dockerfile
+    network_mode: host
+    environment: 
+      - ROS_HOSTNAME=localhost
+    volumes:
+      - opt-carma-ros:/opt/carma/.ros
+      - opt-carma-vehicle-config:/opt/carma/vehicle/config
+    restart: always
+    command: roscore
+
+  carma-messenger-core:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/carma-messenger-core.dockerfile
+    network_mode: host
+    environment: 
+      - ROS_HOSTNAME=localhost
+    volumes:
+      - opt-carma-ros:/opt/carma/.ros
+      - opt-carma-logs:/opt/carma/logs
+      - opt-carma-vehicle-config:/opt/carma/vehicle/config:ro
+    command: wait-for-it.sh localhost:11311 -- roslaunch /opt/carma/vehicle/config/carma-messenger-docker.launch
+
+
+  cohda_dsrc_driver:
+    build:
+      context: ./
+      dockerfile: ./dockerfiles/carma-cohda-dsrc-driver.dockerfile
+    network_mode: host
+    environment: 
+      - ROS_HOSTNAME=localhost
+    volumes:
+      - opt-carma-logs:/opt/carma/logs
+      - opt-carma-ros:/opt/carma/.ros
+      - opt-carma-vehicle-config:/opt/carma/vehicle/config:ro
+    command: bash -c 'wait-for-it.sh localhost:11311 -- roslaunch /opt/carma/vehicle/config/drivers.launch drivers:=dsrc_driver dsrc_address:=${DSRC_ADDRESS} dsrc_listening_port:=${DSRC_REMOTE_PORT} listening_port:=${DSRC_LOCAL_PORT}'
+
+##
+# Uncomment to enable the Novatel GPS driver.
+##
+#  novatel_gps_driver:
+#    build:
+#      context: ./
+#      dockerfile: ./dockerfiles/carma-novatel-gps-driver.dockerfile
+#    devices:
+#      - "/dev/ttyUSB0:/dev/ttyUSB0"
+#    network_mode: host
+#    privileged: true
+#    environment: 
+#      - ROS_HOSTNAME=localhost
+#    volumes:
+#      - opt-carma-logs:/opt/carma/logs
+#      - opt-carma-ros:/opt/carma/.ros
+#      - opt-carma-vehicle-config:/opt/carma/vehicle/config:ro
+#    command: wait-for-it.sh localhost:11311 -- roslaunch novatel_gps_driver tester_for_usb.launch
+
+volumes:
+  opt-carma-ros:
+  opt-carma-logs:
+  opt-carma-vehicle-config:

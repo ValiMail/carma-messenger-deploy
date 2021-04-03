@@ -1,0 +1,8 @@
+{
+  "policies": {
+    "Preferences": {
+      "datareporting.policy.dataSubmissionPolicyBypassNotification": true,
+      "DisplayMenuBar": false
+    }
+  }
+}

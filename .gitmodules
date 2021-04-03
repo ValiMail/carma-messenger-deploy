@@ -1,0 +1,20 @@
+[submodule "modules/carma-messenger"]
+	path = modules/carma-messenger
+	url = https://github.com/usdot-fhwa-stol/carma-messenger.git
+[submodule "./carma-messenger"]
+	branch = carma-system-3.5.0
+[submodule "modules/carma-base"]
+	path = modules/carma-base
+	url = https://github.com/usdot-fhwa-stol/carma-base.git
+[submodule "./carma-base"]
+	branch = carma-system-3.5.0
+[submodule "modules/carma-cohda-dsrc-driver"]
+	path = modules/carma-cohda-dsrc-driver
+	url = https://github.com/usdot-fhwa-stol/carma-cohda-dsrc-driver.git
+[submodule "./carma-cohda-dsrc-driver"]
+	branch = carma-system-3.5.0
+[submodule "modules/novatel_gps_driver"]
+	path = modules/novatel_gps_driver
+	url = https://github.com/usdot-fhwa-stol/novatel_gps_driver.git
+[submodule "./novatel_gps_driver"]
+	branch = carma-system-3.5.0
