@@ -1,0 +1,12 @@
+[submodule "modules/carma-base"]
+	path = modules/carma-base
+	url = https://github.com/usdot-fhwa-stol/carma-base.git
+[submodule "modules/carma-messenger"]
+	path = modules/carma-messenger
+	url = https://github.com/usdot-fhwa-stol/carma-messenger.git
+[submodule "modules/carma-cohda-dsrc-driver"]
+	path = modules/carma-cohda-dsrc-driver
+	url = https://github.com/usdot-fhwa-stol/carma-cohda-dsrc-driver.git
+[submodule "modules/novatel_gps_driver"]
+	path = modules/novatel_gps_driver
+	url = https://github.com/usdot-fhwa-stol/novatel_gps_driver.git
