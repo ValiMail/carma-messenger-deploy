@@ -16,7 +16,7 @@ jobs:
           command: |
             git submodule update --init --recursive
             git --version
-            git submodule foreach 'git checkout carma-system-3.5.0'
+#            git submodule foreach 'git checkout carma-system-3.5.0'
             apt-get update && apt-get install -y git wget unzip
             echo "Download Balena CLI"
             wget -O ./balena-cli.zip "https://github.com/balena-io/balena-cli/releases/download/v12.3.6/balena-cli-v12.3.6-linux-x64-standalone.zip"
