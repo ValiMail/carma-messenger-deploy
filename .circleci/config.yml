@@ -29,4 +29,4 @@ jobs:
             echo "Log into Balena"
             balena login --token $BALENA_TOKEN
             echo "Push repo to Balena"
-            balena push $BALENA_PROJECT_NAME
+            balena push $BALENA_PROJECT_NAME --nocache
